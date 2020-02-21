@@ -83,7 +83,7 @@ if __name__ == "__main__":
         # TODO: Go throug directories and extract files here
         #write to file as we go along
         import pdb;pdb.set_trace()
-        file_paths = [os.path.join(args.input,file_path,matterport_skybox_images) for file_path in os.listdir(args.input[0])
+        file_paths = [os.path.join(args.input,file_path,'matterport_skybox_images') for file_path in os.listdir(args.input[0])
                 if os.path.isdir(os.path.join(args.input[0],file_path))]
         image_paths = [ os.path.join(file_path,image_path) for file_path in file_paths for image_path in os.listdir(file_path) if '.jpg' in image_path]
         with open(os.path.join(args.output,'features.json'),'w') as outfile: 
