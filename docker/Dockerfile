@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
 ARG USER_ID=1000
 RUN useradd -m --no-log-init --system  --uid ${USER_ID} appuser -g sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
 USER appuser
 WORKDIR /home/appuser
 
@@ -24,7 +25,7 @@ RUN pip install --user 'git+https://github.com/cocodataset/cocoapi.git#subdirect
 
 RUN pip install --user 'git+https://github.com/facebookresearch/fvcore'
 # install detectron2
-RUN git clone https://github.com/facebookresearch/detectron2 detectron2_repo
+RUN git clone --single-branch --branch extract_features https://github.com/FelixLabelle/detectron2.git detectron2_repo
 ENV FORCE_CUDA="1"
 # This will build detectron2 for all common cuda architectures and take a lot more time,
 # because inside `docker build`, there is no way to tell which architecture will be used.
@@ -41,3 +42,7 @@ WORKDIR /home/appuser/detectron2_repo
 	#--config-file configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml \
 	#--input input.jpg --output outputs/ \
 	#--opts MODEL.WEIGHTS detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl
+
+RUN sudo apt-get update && sudo apt-get install -y \
+  nano vim emacs
+RUN pip install --user pandas
